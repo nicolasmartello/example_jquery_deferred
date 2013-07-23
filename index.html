@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Deferred</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script type="text/javascript">
+	  
+
+		  var request = $.ajax('containers.html');
+		  function mostrar(){
+			  request.done(function (data) {
+			      console.log('Request completed');
+			      $('body').append(data);
+			  });
+
+			  request.fail( function (data) {
+			  	console.log(data);
+			  	$('body').append('Fail ',data.status,' - request error: ', data.statusText);
+
+			  });
+		  }
+		  
+		function cinemaReq(){
+			console.log('cinemaReq');
+		  return $.get( 'testdata.json' );
+		}
+		function showCinemaMap(){
+			console.log('showCinemaMap');
+		  var ownDeferred = $.Deferred();
+		  var res = 0;
+		  for(var i = 0; i < 50; i ++ ){
+		  		res += 50;
+		  }
+
+		  ownDeferred.resolve(res);
+		  return ownDeferred.promise();
+		}
+
+
+		$.when(cinemaReq() )
+		  .then( function( data ){
+
+		    console.log( 'then. ', data );
+		  
+		  } )
+		  .done( function( data ){
+		  
+		    console.log( 'done', arguments);
+		  } )
+		  .fail( function( data ){
+		    console.log( 'fail ', data );
+		  });
+
+	</script>
+</head>
+<body >
+<button onclick="mostrar()">mostrar</button>
+</body>
+</html>
